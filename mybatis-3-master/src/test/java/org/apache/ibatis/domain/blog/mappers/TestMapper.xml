@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.apache.ibatis.domain.blog.mappers.TestMapper">
+
+  <resultMap id="selectTextMap" type="org.apache.ibatis.domain.blog.TestEntity">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="text" column="text"/>
+    <collection property="test2Entity" columnPrefix="test2_" ofType="org.apache.ibatis.domain.blog.Test2Entity">
+      <id property="id" column="id"/>
+      <result property="testId" column="testId"/>
+      <result property="par" column="par"/>
+    </collection>
+  </resultMap>
+
+  <select id="selectText"  resultMap="selectTextMap">
+     SELECT * from test left join  test2 on test.id=test2.testId
+     /*SELECT * from test left join  test2 on test.id=test2.testId  一个sql 改成：SELECT test2.*,test.* from test left join  test2 on test.id=test2.testId就不行了
+      本来嵌套结果集应该只有两个数据，但是现在有三个。。。。 所以不同表的数据前缀还是需要的*/
+  </select>
+
+</mapper>
